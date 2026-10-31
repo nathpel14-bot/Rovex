@@ -1,0 +1,715 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rovex Studio</title>
+
+<style>
+:root {
+ --bg:#ffffff;
+ --surface:#f4f5f7;
+ --text:#171717;
+ --muted:#777;
+ --border:#e7e7e7;
+ --accent:#315ce8;
+}
+
+body.dark {
+ --bg:#101114;
+ --surface:#1c1e23;
+ --text:#f5f5f5;
+ --muted:#aaa;
+ --border:#303137;
+ --accent:#7895ff;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+
+body {
+ font-family:Arial,sans-serif;
+ background:var(--bg);
+ color:var(--text);
+ transition:background .35s,color .35s;
+ overflow-x:hidden;
+}
+
+header {
+ height:75px;
+ padding:0 6%;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ background:var(--bg);
+ border-bottom:1px solid var(--border);
+ position:sticky;
+ top:0;
+ z-index:20;
+}
+
+.brand {
+ font-size:24px;
+ font-weight:900;
+ letter-spacing:-1px;
+}
+
+.brand span{color:var(--accent)}
+
+nav{display:flex;gap:20px;align-items:center}
+
+nav a {
+ color:var(--muted);
+ text-decoration:none;
+ font-size:13px;
+ transition:.2s;
+}
+
+nav a:hover{color:var(--accent)}
+
+.settings {
+ position:relative;
+}
+
+.settings-button {
+ border:1px solid var(--border);
+ background:var(--surface);
+ color:var(--text);
+ padding:10px 15px;
+ border-radius:25px;
+ cursor:pointer;
+}
+
+.settings-menu {
+ display:none;
+ position:absolute;
+ right:0;
+ top:48px;
+ width:220px;
+ background:var(--bg);
+ border:1px solid var(--border);
+ border-radius:15px;
+ padding:15px;
+ box-shadow:0 12px 35px #0002;
+}
+
+.settings-menu.show{display:block;animation:appear .2s ease}
+
+.settings-menu button,.settings-menu select {
+ width:100%;
+ padding:12px;
+ margin:5px 0;
+ background:var(--surface);
+ color:var(--text);
+ border:1px solid var(--border);
+ border-radius:8px;
+ cursor:pointer;
+}
+
+.hero {
+ min-height:580px;
+ background:linear-gradient(140deg,var(--bg),var(--surface));
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ justify-content:center;
+ text-align:center;
+ padding:60px 20px;
+}
+
+.hero h1 {
+ font-size:clamp(45px,8vw,90px);
+ letter-spacing:-5px;
+ animation:slideUp .9s ease;
+}
+
+.hero p {
+ max-width:650px;
+ color:var(--muted);
+ font-size:19px;
+ line-height:1.7;
+ margin-top:22px;
+ animation:slideUp 1.2s ease;
+}
+
+.eyebrow {
+ letter-spacing:4px;
+ font-size:12px;
+ color:var(--accent);
+ margin-bottom:25px;
+}
+
+.btn {
+ display:inline-block;
+ margin:25px 5px 0;
+ padding:15px 25px;
+ border-radius:30px;
+ background:var(--text);
+ color:var(--bg);
+ text-decoration:none;
+ transition:.3s;
+}
+
+.btn:hover {
+ transform:translateY(-5px);
+ opacity:.8;
+}
+
+section {
+ padding:90px 7%;
+ scroll-margin-top:75px;
+}
+
+.heading {
+ text-align:center;
+ margin-bottom:45px;
+}
+
+.heading h2 {
+ font-size:clamp(30px,5vw,45px);
+ letter-spacing:-2px;
+ margin-bottom:12px;
+}
+
+.heading p{color:var(--muted)}
+
+.about {
+ max-width:850px;
+ margin:auto;
+ text-align:center;
+ line-height:1.9;
+ color:var(--muted);
+ font-size:17px;
+}
+
+.grey{background:var(--surface)}
+
+.grid {
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+ gap:22px;
+}
+
+.card {
+ background:var(--bg);
+ border:1px solid var(--border);
+ border-radius:20px;
+ padding:30px;
+ transition:.35s;
+ opacity:0;
+ transform:translateY(25px);
+}
+
+.card.visible {
+ opacity:1;
+ transform:translateY(0);
+}
+
+.card:hover {
+ transform:translateY(-8px);
+ box-shadow:0 15px 35px #00000012;
+}
+
+.card .icon{font-size:35px;margin-bottom:20px}
+.card h3{margin-bottom:12px;font-size:21px}
+.card p{color:var(--muted);line-height:1.7;font-size:14px}
+
+.cartable {
+ max-width:1050px;
+ margin:auto;
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:35px;
+ padding:40px;
+ background:var(--bg);
+ border:1px solid var(--border);
+ border-radius:25px;
+ align-items:center;
+}
+
+.cartable h3{font-size:45px;margin-bottom:20px}
+.cartable p{color:var(--muted);line-height:1.8}
+.book {
+ min-height:220px;
+ border-radius:20px;
+ background:var(--surface);
+ display:grid;
+ place-items:center;
+ font-size:85px;
+}
+
+.person{text-align:center}
+.avatar {
+ height:75px;width:75px;border-radius:50%;
+ background:var(--surface);
+ display:grid;place-items:center;
+ font-size:30px;margin:0 auto 20px;
+}
+
+.role {
+ display:inline-block;
+ padding:7px 12px;
+ background:var(--surface);
+ border-radius:20px;
+ font-size:12px;
+ margin-top:12px;
+ color:var(--muted);
+}
+
+.discord {
+ text-align:center;
+ background:#171923;
+ color:white;
+}
+
+.discord p{color:#aaa}
+.discord .btn{background:#5865f2;color:white}
+
+form {
+ max-width:650px;
+ margin:auto;
+ padding:35px;
+ background:var(--bg);
+ border:1px solid var(--border);
+ border-radius:20px;
+}
+
+input,select,textarea {
+ width:100%;
+ padding:15px;
+ margin-bottom:15px;
+ border:1px solid var(--border);
+ border-radius:10px;
+ background:var(--surface);
+ color:var(--text);
+ font-size:15px;
+}
+
+textarea{height:140px}
+
+form button {
+ width:100%;
+ padding:16px;
+ border:0;
+ border-radius:10px;
+ background:var(--text);
+ color:var(--bg);
+ cursor:pointer;
+}
+
+footer {
+ background:#111;
+ color:white;
+ text-align:center;
+ padding:40px;
+}
+
+footer p{color:#aaa;margin-top:12px}
+
+@keyframes slideUp {
+ from{opacity:0;transform:translateY(30px)}
+ to{opacity:1;transform:translateY(0)}
+}
+
+@keyframes appear {
+ from{opacity:0;transform:translateY(10px)}
+ to{opacity:1;transform:translateY(0)}
+}
+
+/* Fenêtre de choix de langue */
+
+.language-screen {
+ position:fixed;
+ inset:0;
+ z-index:100;
+ background:var(--bg);
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ padding:20px;
+}
+
+.language-box {
+ max-width:550px;
+ width:100%;
+ text-align:center;
+ animation:slideUp .7s ease;
+}
+
+.language-box h1 {
+ font-size:42px;
+ letter-spacing:-2px;
+ margin-bottom:12px;
+}
+
+.language-box p{color:var(--muted);margin-bottom:30px}
+
+.language-grid {
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:10px;
+ max-height:350px;
+ overflow:auto;
+}
+
+.language-grid button {
+ padding:15px;
+ background:var(--surface);
+ border:1px solid var(--border);
+ color:var(--text);
+ border-radius:12px;
+ cursor:pointer;
+ transition:.2s;
+}
+
+.language-grid button:hover {
+ border-color:var(--accent);
+ transform:scale(1.03);
+}
+
+@media(max-width:850px) {
+ header{height:auto;padding:18px;flex-wrap:wrap;gap:15px}
+ nav{flex-wrap:wrap;gap:12px}
+ .cartable{grid-template-columns:1fr}
+ .hero h1{letter-spacing:-2px}
+}
+</style>
+</head>
+
+<body>
+
+<!-- CHOIX DE LANGUE AU PREMIER OUVERTURE -->
+
+<div class="language-screen" id="languageScreen">
+ <div class="language-box">
+  <div style="font-size:45px;margin-bottom:20px">🌐</div>
+  <h1>Welcome to Rovex Studio.</h1>
+  <p>Select your language to continue.</p>
+  <div class="language-grid" id="languageGrid"></div>
+ </div>
+</div>
+
+<header>
+ <div class="brand">ROVEX <span>STUDIO.</span></div>
+
+ <nav>
+  <a href="#accueil" data-i="home">Accueil</a>
+  <a href="#studio" data-i="about">Studio</a>
+  <a href="#cartable" data-i="cartable">Cartable</a>
+  <a href="#logiciels" data-i="software">Logiciels</a>
+  <a href="#marques" data-i="brands">Marques</a>
+  <a href="#equipe" data-i="team">Équipe</a>
+  <a href="#contact" data-i="contact">Contact</a>
+ </nav>
+
+ <div class="settings">
+  <button class="settings-button" onclick="toggleSettings()">⚙️ <span data-i="settings">Paramètres</span></button>
+  <div class="settings-menu" id="settingsMenu">
+   <button onclick="toggleTheme()" data-i="theme">🌙 Mode sombre / clair</button>
+   <select id="languageSelect" onchange="changeLanguage(this.value)"></select>
+   <button onclick="openLanguageScreen()" data-i="changeLanguage">🌐 Changer de langue</button>
+  </div>
+ </div>
+</header>
+
+<main>
+
+<div class="hero" id="accueil">
+ <div class="eyebrow">INNOVATION · CRÉATION · TECHNOLOGIE</div>
+ <h1 data-i="welcome">Bienvenue chez Rovex.</h1>
+ <p data-i="heroText">Nous imaginons et développons les projets numériques de demain.</p>
+ <div>
+  <a class="btn" href="#studio" data-i="discover">Découvrir le studio</a>
+  <a class="btn" href="https://discord.gg/3G8cRtgdYa" target="_blank" data-i="discordButton">Notre Discord ↗</a>
+ </div>
+</div>
+
+<section id="studio">
+ <div class="heading">
+  <h2 data-i="aboutTitle">Qui sommes-nous ?</h2>
+  <p data-i="aboutSubtitle">Découvrez l'univers Rovex Studio.</p>
+ </div>
+ <div class="about" data-i="aboutText">
+  Rovex Studio est un studio indépendant consacré au développement informatique, à la création de logiciels, aux médias et aux nouvelles technologies. Notre ambition est de construire des projets innovants, accessibles et utiles.
+ </div>
+</section>
+
+<section class="grey" id="cartable">
+ <div class="heading">
+  <h2 data-i="projects">Nos projets</h2>
+  <p data-i="projectsText">Des projets qui ont du sens.</p>
+ </div>
+ <div class="cartable">
+  <div>
+   <h3>Cartable.</h3>
+   <p data-i="cartableText">Cartable est un projet de cahier numérique destiné à accompagner les élèves, notamment les personnes ayant des troubles DYS ou un TDAH. Notre objectif est de rendre le travail scolaire plus accessible.</p>
+   <a href="#contact" class="btn" data-i="learnMore">En savoir plus</a>
+  </div>
+  <div class="book">📚</div>
+ </div>
+</section>
+
+<section id="logiciels">
+ <div class="heading">
+  <h2 data-i="softwareTitle">Nos logiciels</h2>
+  <p data-i="softwareText">Des outils numériques imaginés par notre équipe.</p>
+ </div>
+ <div class="grid">
+  <div class="card"><div class="icon">📚</div><h3>Cartable</h3><p data-i="software1">Un cahier numérique pour accompagner les élèves.</p></div>
+  <div class="card"><div class="icon">💻</div><h3 data-i="applications">Applications</h3><p data-i="software2">Des applications et outils numériques innovants.</p></div>
+  <div class="card"><div class="icon">⚙️</div><h3 data-i="webSolutions">Solutions Web</h3><p data-i="software3">Des plateformes et services développés par notre équipe.</p></div>
+ </div>
+</section>
+
+<section class="grey" id="marques">
+ <div class="heading">
+  <h2 data-i="brandsTitle">Nos marques</h2>
+  <p data-i="brandsText">Plusieurs univers, une seule direction.</p>
+ </div>
+ <div class="grid">
+  <div class="card"><div class="icon">🎬</div><h3>Rovex Media</h3><p data-i="mediaText">Notre univers consacré aux médias et à la création.</p></div>
+  <div class="card"><div class="icon">🚀</div><h3>Rovex Technology</h3><p data-i="technologyText">Notre univers consacré aux innovations technologiques.</p></div>
+  <div class="card"><div class="icon">🌐</div><h3>Rovex Network</h3><p data-i="networkText">Notre univers consacré aux plateformes numériques.</p></div>
+ </div>
+</section>
+
+<section id="equipe">
+ <div class="heading">
+  <h2 data-i="teamTitle">Direction & Staff</h2>
+  <p data-i="teamText">Les personnes qui font avancer nos projets.</p>
+ </div>
+ <div class="grid">
+  <div class="card person"><div class="avatar">👤</div><h3>Léandre</h3><p>CEO · Founder</p><span class="role" data-i="founder">Fondateur</span></div>
+  <div class="card person"><div class="avatar">🏛️</div><h3>Dev</h3><p data-i="chiefCabinet">Chef exécutif du Cabinet du CEO</p><span class="role">CEO Cabinet</span></div>
+  <div class="card person"><div class="avatar">📊</div><h3>COO</h3><p>Chief Operating Officer</p><span class="role" data-i="operations">Direction des opérations</span></div>
+  <div class="card person"><div class="avatar">💻</div><h3>CTO</h3><p>Chief Technology Officer</p><span class="role" data-i="technical">Direction technique</span></div>
+  <div class="card person"><div class="avatar">🏢</div><h3 data-i="management">Direction</h3><p data-i="managementText">L'ensemble des membres de l'équipe dirigeante.</p><span class="role" data-i="leadership">Équipe dirigeante</span></div>
+  <div class="card person"><div class="avatar">🤝</div><h3>Staff</h3><p data-i="staffText">Les membres qui participent au développement des projets.</p><span class="role">Rovex Studio</span></div>
+ </div>
+</section>
+
+<section class="discord">
+ <div class="heading">
+  <h2 data-i="join">Rejoignez Rovex Studio.</h2>
+  <p data-i="joinText">Retrouvez notre équipe sur Discord.</p>
+  <a class="btn" href="https://discord.gg/3G8cRtgdYa" target="_blank" data-i="openDiscord">Ouvrir notre Discord ↗</a>
+ </div>
+</section>
+
+<section class="grey" id="contact">
+ <div class="heading">
+  <h2 data-i="contactTitle">Nous contacter.</h2>
+  <p data-i="contactText">Une question ? Un partenariat ? Un projet ?</p>
+ </div>
+ <form id="contactForm">
+  <input id="nom" placeholder="Nom et prénom" required>
+  <input id="email" type="email" placeholder="Votre adresse e-mail" required>
+  <select id="sujet" required>
+   <option value="" data-i="chooseSubject">Choisir un sujet</option>
+   <option>Demande d'information</option>
+   <option>Cartable</option>
+   <option>Partenariat</option>
+   <option>Recrutement</option>
+   <option>Autre</option>
+  </select>
+  <textarea id="message" placeholder="Votre message..." required></textarea>
+  <button type="submit" data-i="send">Envoyer mon message →</button>
+ </form>
+</section>
+
+</main>
+
+<footer>
+ <strong>ROVEX STUDIO</strong>
+ <p data-i="footer">Innovation · Création · Technologie</p>
+ <p>© 2026 Rovex Studio</p>
+</footer>
+
+<script>
+const languages = {
+fr:"Français",en:"English",es:"Español",de:"Deutsch",
+it:"Italiano",pt:"Português",nl:"Nederlands",pl:"Polski",
+ru:"Русский",uk:"Українська",tr:"Türkçe",ar:"العربية",
+zh:"中文",ja:"日本語",ko:"한국어",hi:"हिन्दी",
+sv:"Svenska",da:"Dansk",no:"Norsk",fi:"Suomi"
+};
+
+const translations = {
+fr:{
+home:"Accueil",about:"Studio",cartable:"Cartable",software:"Logiciels",brands:"Marques",team:"Équipe",contact:"Contact",settings:"Paramètres",theme:"🌙 Mode sombre / clair",changeLanguage:"🌐 Changer de langue",
+welcome:"Bienvenue chez Rovex.",heroText:"Nous imaginons et développons les projets numériques de demain.",discover:"Découvrir le studio",discordButton:"Notre Discord ↗",
+aboutTitle:"Qui sommes-nous ?",aboutSubtitle:"Découvrez l'univers Rovex Studio.",aboutText:"Rovex Studio est un studio indépendant consacré au développement informatique, à la création de logiciels, aux médias et aux nouvelles technologies. Notre ambition est de construire des projets innovants, accessibles et utiles.",
+projects:"Nos projets",projectsText:"Des projets qui ont du sens.",cartableText:"Cartable est un projet de cahier numérique destiné à accompagner les élèves, notamment les personnes ayant des troubles DYS ou un TDAH. Notre objectif est de rendre le travail scolaire plus accessible.",learnMore:"En savoir plus",
+softwareTitle:"Nos logiciels",softwareText:"Des outils numériques imaginés par notre équipe.",software1:"Un cahier numérique pour accompagner les élèves.",applications:"Applications",software2:"Des applications et outils numériques innovants.",webSolutions:"Solutions Web",software3:"Des plateformes et services développés par notre équipe.",
+brandsTitle:"Nos marques",brandsText:"Plusieurs univers, une seule direction.",mediaText:"Notre univers consacré aux médias et à la création.",technologyText:"Notre univers consacré aux innovations technologiques.",networkText:"Notre univers consacré aux plateformes numériques.",
+teamTitle:"Direction & Staff",teamText:"Les personnes qui font avancer nos projets.",founder:"Fondateur",chiefCabinet:"Chef exécutif du Cabinet du CEO",operations:"Direction des opérations",technical:"Direction technique",management:"Direction",managementText:"L'ensemble des membres de l'équipe dirigeante.",leadership:"Équipe dirigeante",staffText:"Les membres qui participent au développement des projets.",
+join:"Rejoignez Rovex Studio.",joinText:"Retrouvez notre équipe sur Discord.",openDiscord:"Ouvrir notre Discord ↗",contactTitle:"Nous contacter.",contactText:"Une question ? Un partenariat ? Un projet ?",chooseSubject:"Choisir un sujet",send:"Envoyer mon message →",footer:"Innovation · Création · Technologie"
+},
+en:{
+home:"Home",about:"About",cartable:"Cartable",software:"Software",brands:"Brands",team:"Team",contact:"Contact",settings:"Settings",theme:"🌙 Dark / Light mode",changeLanguage:"🌐 Change language",
+welcome:"Welcome to Rovex.",heroText:"We imagine and develop the digital projects of tomorrow.",discover:"Discover the studio",discordButton:"Our Discord ↗",
+aboutTitle:"Who are we?",aboutSubtitle:"Discover Rovex Studio.",aboutText:"Rovex Studio is an independent studio focused on software development, digital projects, media and new technologies. Our ambition is to build innovative, accessible and useful projects.",
+projects:"Our projects",projectsText:"Projects with purpose.",cartableText:"Cartable is a digital notebook project designed to support students, especially people with DYS learning disorders or ADHD. Our goal is to make schoolwork more accessible.",learnMore:"Learn more",
+softwareTitle:"Our software",softwareText:"Digital tools created by our team.",software1:"A digital notebook for students.",applications:"Applications",software2:"Innovative applications and digital tools.",webSolutions:"Web solutions",software3:"Platforms and services developed by our team.",
+brandsTitle:"Our brands",brandsText:"Different worlds, one direction.",mediaText:"Our world dedicated to media and creativity.",technologyText:"Our world dedicated to technological innovation.",networkText:"Our world dedicated to digital platforms.",
+teamTitle:"Management & Staff",teamText:"The people moving our projects forward.",founder:"Founder",chiefCabinet:"Chief Executive of the CEO's Office",operations:"Operations management",technical:"Technical management",management:"Management",managementText:"All members of the management team.",leadership:"Leadership team",staffText:"Members contributing to our projects.",
+join:"Join Rovex Studio.",joinText:"Meet our team on Discord.",openDiscord:"Open our Discord ↗",contactTitle:"Contact us.",contactText:"A question? A partnership? A project?",chooseSubject:"Choose a subject",send:"Send my message →",footer:"Innovation · Creation · Technology"
+},
+es:{
+home:"Inicio",about:"Estudio",cartable:"Cartable",software:"Software",brands:"Marcas",team:"Equipo",contact:"Contacto",settings:"Ajustes",theme:"🌙 Modo oscuro / claro",changeLanguage:"🌐 Cambiar idioma",welcome:"Bienvenido a Rovex.",heroText:"Imaginamos y desarrollamos los proyectos digitales del mañana.",discover:"Descubrir el estudio",discordButton:"Nuestro Discord ↗",aboutTitle:"¿Quiénes somos?",aboutSubtitle:"Descubre Rovex Studio.",aboutText:"Rovex Studio es un estudio independiente dedicado al desarrollo informático, software, medios y nuevas tecnologías.",projects:"Nuestros proyectos",projectsText:"Proyectos con propósito.",cartableText:"Cartable es un proyecto de cuaderno digital para ayudar a los estudiantes, especialmente a personas con dificultades DYS o TDAH.",learnMore:"Más información",softwareTitle:"Nuestro software",softwareText:"Herramientas digitales creadas por nuestro equipo.",software1:"Un cuaderno digital para estudiantes.",applications:"Aplicaciones",software2:"Aplicaciones y herramientas digitales innovadoras.",webSolutions:"Soluciones web",software3:"Plataformas y servicios de nuestro equipo.",brandsTitle:"Nuestras marcas",brandsText:"Varios universos, una misma dirección.",mediaText:"Nuestro universo dedicado a los medios y la creatividad.",technologyText:"Nuestro universo dedicado a la innovación tecnológica.",networkText:"Nuestro universo dedicado a las plataformas digitales.",teamTitle:"Dirección y equipo",teamText:"Las personas que impulsan nuestros proyectos.",founder:"Fundador",chiefCabinet:"Jefe ejecutivo del gabinete del CEO",operations:"Dirección de operaciones",technical:"Dirección técnica",management:"Dirección",managementText:"Todos los miembros del equipo directivo.",leadership:"Equipo directivo",staffText:"Miembros que participan en nuestros proyectos.",join:"Únete a Rovex Studio.",joinText:"Encuentra nuestro equipo en Discord.",openDiscord:"Abrir Discord ↗",contactTitle:"Contáctanos.",contactText:"¿Una pregunta, colaboración o proyecto?",chooseSubject:"Elegir un tema",send:"Enviar mi mensaje →",footer:"Innovación · Creación · Tecnología"
+},
+de:{
+home:"Startseite",about:"Studio",cartable:"Cartable",software:"Software",brands:"Marken",team:"Team",contact:"Kontakt",settings:"Einstellungen",theme:"🌙 Dunkel / Hell",changeLanguage:"🌐 Sprache ändern",welcome:"Willkommen bei Rovex.",heroText:"Wir entwickeln die digitalen Projekte von morgen.",discover:"Studio entdecken",discordButton:"Unser Discord ↗",aboutTitle:"Wer sind wir?",aboutSubtitle:"Entdecke Rovex Studio.",aboutText:"Rovex Studio ist ein unabhängiges Studio für Softwareentwicklung, Medien und neue Technologien.",projects:"Unsere Projekte",projectsText:"Projekte mit Bedeutung.",cartableText:"Cartable ist ein digitales Heft, das Schülerinnen und Schüler unterstützt, insbesondere Menschen mit DYS oder ADHS.",learnMore:"Mehr erfahren",softwareTitle:"Unsere Software",softwareText:"Digitale Werkzeuge unseres Teams.",software1:"Ein digitales Heft für Schüler.",applications:"Anwendungen",software2:"Innovative digitale Anwendungen.",webSolutions:"Weblösungen",software3:"Plattformen und Dienste unseres Teams.",brandsTitle:"Unsere Marken",brandsText:"Verschiedene Welten, eine Richtung.",mediaText:"Unsere Welt für Medien und Kreativität.",technologyText:"Unsere Welt für technologische Innovation.",networkText:"Unsere Welt für digitale Plattformen.",teamTitle:"Leitung und Team",teamText:"Die Menschen hinter unseren Projekten.",founder:"Gründer",chiefCabinet:"Leiter des CEO-Kabinetts",operations:"Betriebsleitung",technical:"Technische Leitung",management:"Geschäftsleitung",managementText:"Alle Mitglieder des Führungsteams.",leadership:"Führungsteam",staffText:"Mitglieder unserer Projekte.",join:"Werde Teil von Rovex Studio.",joinText:"Triff unser Team auf Discord.",openDiscord:"Discord öffnen ↗",contactTitle:"Kontaktiere uns.",contactText:"Eine Frage? Eine Partnerschaft? Ein Projekt?",chooseSubject:"Thema auswählen",send:"Nachricht senden →",footer:"Innovation · Kreativität · Technologie"
+},
+it:{
+home:"Home",about:"Studio",cartable:"Cartable",software:"Software",brands:"Marchi",team:"Team",contact:"Contatti",settings:"Impostazioni",theme:"🌙 Modalità scura / chiara",changeLanguage:"🌐 Cambia lingua",welcome:"Benvenuto in Rovex.",heroText:"Immaginiamo e sviluppiamo i progetti digitali di domani.",discover:"Scopri lo studio",discordButton:"Il nostro Discord ↗",aboutTitle:"Chi siamo?",aboutSubtitle:"Scopri Rovex Studio.",aboutText:"Rovex Studio è uno studio indipendente dedicato allo sviluppo software, ai media e alle nuove tecnologie.",projects:"I nostri progetti",projectsText:"Progetti con uno scopo.",cartableText:"Cartable è un progetto di quaderno digitale per aiutare gli studenti, in particolare le persone con disturbi DYS o ADHD.",learnMore:"Scopri di più",softwareTitle:"I nostri software",softwareText:"Strumenti digitali creati dal nostro team.",software1:"Un quaderno digitale per gli studenti.",applications:"Applicazioni",software2:"Applicazioni e strumenti digitali innovativi.",webSolutions:"Soluzioni web",software3:"Piattaforme e servizi sviluppati dal team.",brandsTitle:"I nostri marchi",brandsText:"Mondi diversi, una sola direzione.",mediaText:"Il nostro universo dedicato ai media e alla creatività.",technologyText:"Il nostro universo dedicato all'innovazione tecnologica.",networkText:"Il nostro universo dedicato alle piattaforme digitali.",teamTitle:"Direzione e staff",teamText:"Le persone che fanno progredire i nostri progetti.",founder:"Fondatore",chiefCabinet:"Capo esecutivo del Gabinetto del CEO",operations:"Direzione operativa",technical:"Direzione tecnica",management:"Direzione",managementText:"Tutti i membri del gruppo dirigente.",leadership:"Gruppo dirigente",staffText:"Membri che partecipano ai progetti.",join:"Unisciti a Rovex Studio.",joinText:"Incontra il nostro team su Discord.",openDiscord:"Apri Discord ↗",contactTitle:"Contattaci.",contactText:"Una domanda? Una collaborazione? Un progetto?",chooseSubject:"Scegli un argomento",send:"Invia il messaggio →",footer:"Innovazione · Creazione · Tecnologia"
+},
+pt:{
+home:"Início",about:"Estúdio",cartable:"Cartable",software:"Software",brands:"Marcas",team:"Equipa",contact:"Contacto",settings:"Definições",theme:"🌙 Modo escuro / claro",changeLanguage:"🌐 Mudar idioma",welcome:"Bem-vindo à Rovex.",heroText:"Imaginamos e desenvolvemos os projetos digitais do futuro.",discover:"Conhecer o estúdio",discordButton:"O nosso Discord ↗",aboutTitle:"Quem somos?",aboutSubtitle:"Descubra a Rovex Studio.",aboutText:"A Rovex Studio é um estúdio independente dedicado ao desenvolvimento de software, aos meios de comunicação e às novas tecnologias.",projects:"Os nossos projetos",projectsText:"Projetos com propósito.",cartableText:"Cartable é um projeto de caderno digital para apoiar os alunos, especialmente pessoas com dificuldades DYS ou TDAH.",learnMore:"Saber mais",softwareTitle:"Os nossos softwares",softwareText:"Ferramentas digitais criadas pela nossa equipa.",software1:"Um caderno digital para alunos.",applications:"Aplicações",software2:"Aplicações e ferramentas digitais inovadoras.",webSolutions:"Soluções web",software3:"Plataformas e serviços desenvolvidos pela equipa.",brandsTitle:"As nossas marcas",brandsText:"Vários universos, uma só direção.",mediaText:"O nosso universo dedicado aos meios de comunicação e à criatividade.",technologyText:"O nosso universo dedicado à inovação tecnológica.",networkText:"O nosso universo dedicado às plataformas digitais.",teamTitle:"Direção e equipa",teamText:"As pessoas que fazem avançar os nossos projetos.",founder:"Fundador",chiefCabinet:"Chefe executivo do Gabinete do CEO",operations:"Direção de operações",technical:"Direção técnica",management:"Direção",managementText:"Todos os membros da equipa de direção.",leadership:"Equipa de direção",staffText:"Membros que participam nos projetos.",join:"Junte-se à Rovex Studio.",joinText:"Encontre a nossa equipa no Discord.",openDiscord:"Abrir Discord ↗",contactTitle:"Contacte-nos.",contactText:"Uma pergunta? Uma parceria? Um projeto?",chooseSubject:"Escolher um assunto",send:"Enviar mensagem →",footer:"Inovação · Criação · Tecnologia"
+},
+nl:{
+home:"Home",about:"Studio",cartable:"Cartable",software:"Software",brands:"Merken",team:"Team",contact:"Contact",settings:"Instellingen",theme:"🌙 Donkere / lichte modus",changeLanguage:"🌐 Taal wijzigen",welcome:"Welkom bij Rovex.",heroText:"Wij bedenken en ontwikkelen de digitale projecten van morgen.",discover:"Ontdek de studio",discordButton:"Onze Discord ↗",aboutTitle:"Wie zijn wij?",aboutSubtitle:"Ontdek Rovex Studio.",aboutText:"Rovex Studio is een onafhankelijke studio voor softwareontwikkeling, media en nieuwe technologieën.",projects:"Onze projecten",projectsText:"Projecten met een doel.",cartableText:"Cartable is een digitaal schriftproject dat leerlingen ondersteunt, vooral mensen met DYS of ADHD.",learnMore:"Meer informatie",softwareTitle:"Onze software",softwareText:"Digitale hulpmiddelen van ons team.",software1:"Een digitaal schrift voor leerlingen.",applications:"Applicaties",software2:"Innovatieve digitale toepassingen.",webSolutions:"Weboplossingen",software3:"Platforms en diensten van ons team.",brandsTitle:"Onze merken",brandsText:"Verschillende werelden, één richting.",mediaText:"Onze wereld voor media en creativiteit.",technologyText:"Onze wereld voor technologische innovatie.",networkText:"Onze wereld voor digitale platforms.",teamTitle:"Directie en team",teamText:"De mensen achter onze projecten.",founder:"Oprichter",chiefCabinet:"Hoofd van het kabinet van de CEO",operations:"Operationeel management",technical:"Technisch management",management:"Directie",managementText:"Alle leden van het managementteam.",leadership:"Managementteam",staffText:"Leden die aan projecten meewerken.",join:"Word lid van Rovex Studio.",joinText:"Ontmoet ons team op Discord.",openDiscord:"Open Discord ↗",contactTitle:"Neem contact op.",contactText:"Een vraag? Een samenwerking? Een project?",chooseSubject:"Kies een onderwerp",send:"Bericht verzenden →",footer:"Innovatie · Creatie · Technologie"
+},
+pl:{
+home:"Start",about:"Studio",cartable:"Cartable",software:"Oprogramowanie",brands:"Marki",team:"Zespół",contact:"Kontakt",settings:"Ustawienia",theme:"🌙 Tryb ciemny / jasny",changeLanguage:"🌐 Zmień język",welcome:"Witamy w Rovex.",heroText:"Tworzymy cyfrowe projekty przyszłości.",discover:"Poznaj studio",discordButton:"Nasz Discord ↗",aboutTitle:"Kim jesteśmy?",aboutSubtitle:"Poznaj Rovex Studio.",aboutText:"Rovex Studio to niezależne studio zajmujące się tworzeniem oprogramowania, mediami i nowymi technologiami.",projects:"Nasze projekty",projectsText:"Projekty z celem.",cartableText:"Cartable to projekt cyfrowego zeszytu wspierającego uczniów, szczególnie osoby z dysleksją i ADHD.",learnMore:"Dowiedz się więcej",softwareTitle:"Nasze oprogramowanie",softwareText:"Narzędzia cyfrowe naszego zespołu.",software1:"Cyfrowy zeszyt dla uczniów.",applications:"Aplikacje",software2:"Innowacyjne aplikacje i narzędzia cyfrowe.",webSolutions:"Rozwiązania internetowe",software3:"Platformy i usługi naszego zespołu.",brandsTitle:"Nasze marki",brandsText:"Różne światy, jeden kierunek.",mediaText:"Świat mediów i kreatywności.",technologyText:"Świat innowacji technologicznych.",networkText:"Świat platform cyfrowych.",teamTitle:"Zarząd i zespół",teamText:"Ludzie rozwijający nasze projekty.",founder:"Założyciel",chiefCabinet:"Szef gabinetu CEO",operations:"Zarządzanie operacyjne",technical:"Zarządzanie techniczne",management:"Zarząd",managementText:"Wszyscy członkowie zespołu zarządzającego.",leadership:"Zespół zarządzający",staffText:"Członkowie pracujący nad projektami.",join:"Dołącz do Rovex Studio.",joinText:"Spotkaj nasz zespół na Discordzie.",openDiscord:"Otwórz Discord ↗",contactTitle:"Skontaktuj się z nami.",contactText:"Pytanie? Współpraca? Projekt?",chooseSubject:"Wybierz temat",send:"Wyślij wiadomość →",footer:"Innowacja · Tworzenie · Technologia"
+},
+ru:{
+home:"Главная",about:"Студия",cartable:"Cartable",software:"Программы",brands:"Бренды",team:"Команда",contact:"Контакты",settings:"Настройки",theme:"🌙 Тёмная / светлая тема",changeLanguage:"🌐 Сменить язык",welcome:"Добро пожаловать в Rovex.",heroText:"Мы создаём цифровые проекты будущего.",discover:"О студии",discordButton:"Наш Discord ↗",aboutTitle:"Кто мы?",aboutSubtitle:"Откройте для себя Rovex Studio.",aboutText:"Rovex Studio — независимая студия разработки программного обеспечения, медиа и новых технологий.",projects:"Наши проекты",projectsText:"Проекты со смыслом.",cartableText:"Cartable — проект цифровой тетради для поддержки учащихся, в том числе людей с особенностями DYS и СДВГ.",learnMore:"Подробнее",softwareTitle:"Наши программы",softwareText:"Цифровые инструменты нашей команды.",software1:"Цифровая тетрадь для учеников.",applications:"Приложения",software2:"Инновационные приложения и инструменты.",webSolutions:"Веб-решения",software3:"Платформы и сервисы нашей команды.",brandsTitle:"Наши бренды",brandsText:"Разные направления, единая цель.",mediaText:"Мир медиа и творчества.",technologyText:"Мир технологических инноваций.",networkText:"Мир цифровых платформ.",teamTitle:"Руководство и команда",teamText:"Люди, развивающие наши проекты.",founder:"Основатель",chiefCabinet:"Руководитель аппарата CEO",operations:"Операционное управление",technical:"Техническое управление",management:"Руководство",managementText:"Все участники руководящей команды.",leadership:"Руководящая команда",staffText:"Участники наших проектов.",join:"Присоединяйтесь к Rovex Studio.",joinText:"Найдите нашу команду в Discord.",openDiscord:"Открыть Discord ↗",contactTitle:"Свяжитесь с нами.",contactText:"Вопрос? Партнёрство? Проект?",chooseSubject:"Выберите тему",send:"Отправить сообщение →",footer:"Инновации · Создание · Технологии"
+},
+uk:{
+home:"Головна",about:"Студія",cartable:"Cartable",software:"Програми",brands:"Бренди",team:"Команда",contact:"Контакти",settings:"Налаштування",theme:"🌙 Темна / світла тема",changeLanguage:"🌐 Змінити мову",welcome:"Ласкаво просимо до Rovex.",heroText:"Ми створюємо цифрові проєкти майбутнього.",discover:"Про студію",discordButton:"Наш Discord ↗",aboutTitle:"Хто ми?",aboutSubtitle:"Відкрийте для себе Rovex Studio.",aboutText:"Rovex Studio — незалежна студія розробки програмного забезпечення, медіа та нових технологій.",projects:"Наші проєкти",projectsText:"Проєкти зі змістом.",cartableText:"Cartable — проєкт цифрового зошита для підтримки учнів, зокрема людей із DYS та ADHD.",learnMore:"Дізнатися більше",softwareTitle:"Наші програми",softwareText:"Цифрові інструменти нашої команди.",software1:"Цифровий зошит для учнів.",applications:"Застосунки",software2:"Інноваційні цифрові застосунки.",webSolutions:"Вебрішення",software3:"Платформи та сервіси нашої команди.",brandsTitle:"Наші бренди",brandsText:"Різні світи, один напрям.",mediaText:"Наш світ медіа та творчості.",technologyText:"Наш світ технологічних інновацій.",networkText:"Наш світ цифрових платформ.",teamTitle:"Керівництво та команда",teamText:"Люди, які розвивають наші проєкти.",founder:"Засновник",chiefCabinet:"Керівник кабінету CEO",operations:"Операційне управління",technical:"Технічне управління",management:"Керівництво",managementText:"Усі члени керівної команди.",leadership:"Керівна команда",staffText:"Учасники наших проєктів.",join:"Приєднуйтесь до Rovex Studio.",joinText:"Знайдіть нашу команду в Discord.",openDiscord:"Відкрити Discord ↗",contactTitle:"Зв'яжіться з нами.",contactText:"Запитання? Партнерство? Проєкт?",chooseSubject:"Оберіть тему",send:"Надіслати повідомлення →",footer:"Інновації · Створення · Технології"
+},
+tr:{
+home:"Ana sayfa",about:"Stüdyo",cartable:"Cartable",software:"Yazılımlar",brands:"Markalar",team:"Ekip",contact:"İletişim",settings:"Ayarlar",theme:"🌙 Koyu / açık mod",changeLanguage:"🌐 Dili değiştir",welcome:"Rovex'e hoş geldiniz.",heroText:"Geleceğin dijital projelerini tasarlıyor ve geliştiriyoruz.",discover:"Stüdyoyu keşfet",discordButton:"Discord'umuz ↗",aboutTitle:"Biz kimiz?",aboutSubtitle:"Rovex Studio'yu keşfedin.",aboutText:"Rovex Studio, yazılım geliştirme, medya ve yeni teknolojilere odaklanan bağımsız bir stüdyodur.",projects:"Projelerimiz",projectsText:"Anlamlı projeler.",cartableText:"Cartable, özellikle DYS veya DEHB yaşayan öğrencileri desteklemek için tasarlanmış dijital defter projesidir.",learnMore:"Daha fazla bilgi",softwareTitle:"Yazılımlarımız",softwareText:"Ekibimiz tarafından geliştirilen dijital araçlar.",software1:"Öğrenciler için dijital defter.",applications:"Uygulamalar",software2:"Yenilikçi dijital uygulamalar.",webSolutions:"Web çözümleri",software3:"Ekibimiz tarafından geliştirilen platformlar.",brandsTitle:"Markalarımız",brandsText:"Farklı dünyalar, tek yön.",mediaText:"Medya ve yaratıcılık dünyamız.",technologyText:"Teknolojik yenilik dünyamız.",networkText:"Dijital platformlar dünyamız.",teamTitle:"Yönetim ve ekip",teamText:"Projelerimizi geliştiren insanlar.",founder:"Kurucu",chiefCabinet:"CEO Ofisi İcra Başkanı",operations:"Operasyon yönetimi",technical:"Teknik yönetim",management:"Yönetim",managementText:"Yönetim ekibinin tüm üyeleri.",leadership:"Yönetim ekibi",staffText:"Projelerimize katkıda bulunan üyeler.",join:"Rovex Studio'ya katılın.",joinText:"Ekibimizle Discord'da buluşun.",openDiscord:"Discord'u aç ↗",contactTitle:"Bize ulaşın.",contactText:"Bir soru? Ortaklık? Proje?",chooseSubject:"Konu seçin",send:"Mesajımı gönder →",footer:"Yenilik · Yaratıcılık · Teknoloji"
+},
+ar:{
+home:"الرئيسية",about:"الاستوديو",cartable:"Cartable",software:"البرامج",brands:"العلامات",team:"الفريق",contact:"اتصل بنا",settings:"الإعدادات",theme:"🌙 الوضع الداكن / الفاتح",changeLanguage:"🌐 تغيير اللغة",welcome:"مرحباً بكم في Rovex.",heroText:"نبتكر ونطور المشاريع الرقمية للمستقبل.",discover:"اكتشف الاستوديو",discordButton:"Discord الخاص بنا ↗",aboutTitle:"من نحن؟",aboutSubtitle:"اكتشف Rovex Studio.",aboutText:"Rovex Studio استوديو مستقل متخصص في تطوير البرمجيات والإعلام والتقنيات الحديثة.",projects:"مشاريعنا",projectsText:"مشاريع لها هدف.",cartableText:"Cartable مشروع دفتر رقمي لمساعدة الطلاب، وخاصة الأشخاص الذين لديهم صعوبات DYS أو اضطراب فرط الحركة ونقص الانتباه.",learnMore:"اعرف المزيد",softwareTitle:"برامجنا",softwareText:"أدوات رقمية من فريقنا.",software1:"دفتر رقمي للطلاب.",applications:"التطبيقات",software2:"تطبيقات وأدوات رقمية مبتكرة.",webSolutions:"حلول الويب",software3:"منصات وخدمات طورها فريقنا.",brandsTitle:"علاماتنا التجارية",brandsText:"عوالم مختلفة واتجاه واحد.",mediaText:"عالمنا المخصص للإعلام والإبداع.",technologyText:"عالمنا المخصص للابتكار التكنولوجي.",networkText:"عالمنا المخصص للمنصات الرقمية.",teamTitle:"الإدارة والفريق",teamText:"الأشخاص الذين يطورون مشاريعنا.",founder:"المؤسس",chiefCabinet:"رئيس مكتب المدير التنفيذي",operations:"إدارة العمليات",technical:"الإدارة التقنية",management:"الإدارة",managementText:"جميع أعضاء فريق الإدارة.",leadership:"فريق القيادة",staffText:"الأعضاء المشاركون في مشاريعنا.",join:"انضم إلى Rovex Studio.",joinText:"تواصل مع فريقنا على Discord.",openDiscord:"افتح Discord ↗",contactTitle:"اتصل بنا.",contactText:"سؤال؟ شراكة؟ مشروع؟",chooseSubject:"اختر موضوعاً",send:"إرسال رسالتي →",footer:"الابتكار · الإبداع · التكنولوجيا"
+},
+zh:{
+home:"首页",about:"工作室",cartable:"Cartable",software:"软件",brands:"品牌",team:"团队",contact:"联系",settings:"设置",theme:"🌙 深色 / 浅色模式",changeLanguage:"🌐 更改语言",welcome:"欢迎来到 Rovex。",heroText:"我们构想并开发未来的数字项目。",discover:"了解工作室",discordButton:"我们的 Discord ↗",aboutTitle:"我们是谁？",aboutSubtitle:"了解 Rovex Studio。",aboutText:"Rovex Studio 是一家专注于软件开发、媒体和新技术的独立工作室。",projects:"我们的项目",projectsText:"有意义的项目。",cartableText:"Cartable 是一个数字笔记本项目，旨在帮助学生，尤其是有 DYS 学习障碍或 ADHD 的学生。",learnMore:"了解更多",softwareTitle:"我们的软件",softwareText:"由团队打造的数字工具。",software1:"帮助学生的数字笔记本。",applications:"应用程序",software2:"创新的数字应用和工具。",webSolutions:"网络解决方案",software3:"由团队开发的平台和服务。",brandsTitle:"我们的品牌",brandsText:"不同领域，同一方向。",mediaText:"专注于媒体和创意的领域。",technologyText:"专注于技术创新的领域。",networkText:"专注于数字平台的领域。",teamTitle:"管理层与团队",teamText:"推动项目发展的成员。",founder:"创始人",chiefCabinet:"CEO办公室执行负责人",operations:"运营管理",technical:"技术管理",management:"管理层",managementText:"管理团队的所有成员。",leadership:"领导团队",staffText:"参与项目的成员。",join:"加入 Rovex Studio。",joinText:"在 Discord 上认识我们的团队。",openDiscord:"打开 Discord ↗",contactTitle:"联系我们。",contactText:"问题？合作？项目？",chooseSubject:"选择主题",send:"发送消息 →",footer:"创新 · 创造 · 科技"
+},
+ja:{
+home:"ホーム",about:"スタジオ",cartable:"Cartable",software:"ソフトウェア",brands:"ブランド",team:"チーム",contact:"お問い合わせ",settings:"設定",theme:"🌙 ダーク / ライトモード",changeLanguage:"🌐 言語を変更",welcome:"Rovexへようこそ。",heroText:"未来のデジタルプロジェクトを考え、開発します。",discover:"スタジオを見る",discordButton:"Discord ↗",aboutTitle:"私たちについて",aboutSubtitle:"Rovex Studioをご紹介します。",aboutText:"Rovex Studioは、ソフトウェア開発、メディア、新技術に取り組む独立したスタジオです。",projects:"プロジェクト",projectsText:"目的のあるプロジェクト。",cartableText:"Cartableは、特にDYSやADHDのある生徒を支援するデジタルノートのプロジェクトです。",learnMore:"詳しく見る",softwareTitle:"ソフトウェア",softwareText:"チームが開発するデジタルツール。",software1:"生徒を支援するデジタルノート。",applications:"アプリ",software2:"革新的なデジタルアプリとツール。",webSolutions:"ウェブソリューション",software3:"チームが開発するプラットフォーム。",brandsTitle:"ブランド",brandsText:"異なる世界、ひとつの方向。",mediaText:"メディアと創造の世界。",technologyText:"技術革新の世界。",networkText:"デジタルプラットフォームの世界。",teamTitle:"経営陣とスタッフ",teamText:"プロジェクトを進めるメンバー。",founder:"創設者",chiefCabinet:"CEO室の最高責任者",operations:"運営責任者",technical:"技術責任者",management:"経営陣",managementText:"経営チームの全メンバー。",leadership:"リーダーシップチーム",staffText:"プロジェクトに参加するメンバー。",join:"Rovex Studioに参加する。",joinText:"Discordでチームと交流しましょう。",openDiscord:"Discordを開く ↗",contactTitle:"お問い合わせ。",contactText:"質問、提携、プロジェクトについて。",chooseSubject:"件名を選択",send:"メッセージを送信 →",footer:"革新 · 創造 · テクノロジー"
+},
+ko:{
+home:"홈",about:"스튜디오",cartable:"Cartable",software:"소프트웨어",brands:"브랜드",team:"팀",contact:"문의",settings:"설정",theme:"🌙 다크 / 라이트 모드",changeLanguage:"🌐 언어 변경",welcome:"Rovex에 오신 것을 환영합니다.",heroText:"미래의 디지털 프로젝트를 구상하고 개발합니다.",discover:"스튜디오 알아보기",discordButton:"Discord ↗",aboutTitle:"우리는 누구인가요?",aboutSubtitle:"Rovex Studio를 만나보세요.",aboutText:"Rovex Studio는 소프트웨어 개발, 미디어 및 신기술을 다루는 독립 스튜디오입니다.",projects:"프로젝트",projectsText:"의미 있는 프로젝트.",cartableText:"Cartable은 특히 DYS 또는 ADHD가 있는 학생들을 지원하기 위한 디지털 노트 프로젝트입니다.",learnMore:"자세히 보기",softwareTitle:"소프트웨어",softwareText:"팀이 만든 디지털 도구.",software1:"학생을 위한 디지털 노트.",applications:"애플리케이션",software2:"혁신적인 디지털 앱과 도구.",webSolutions:"웹 솔루션",software3:"팀이 개발한 플랫폼과 서비스.",brandsTitle:"브랜드",brandsText:"다양한 분야, 하나의 방향.",mediaText:"미디어와 창작의 세계.",technologyText:"기술 혁신의 세계.",networkText:"디지털 플랫폼의 세계.",teamTitle:"경영진 및 팀",teamText:"프로젝트를 발전시키는 사람들.",founder:"창립자",chiefCabinet:"CEO 비서실 최고 책임자",operations:"운영 책임자",technical:"기술 책임자",management:"경영진",managementText:"경영팀의 모든 구성원.",leadership:"리더십 팀",staffText:"프로젝트에 참여하는 구성원.",join:"Rovex Studio에 참여하세요.",joinText:"Discord에서 팀을 만나보세요.",openDiscord:"Discord 열기 ↗",contactTitle:"문의하기.",contactText:"질문, 파트너십 또는 프로젝트가 있나요?",chooseSubject:"주제 선택",send:"메시지 보내기 →",footer:"혁신 · 창조 · 기술"
+},
+hi:{
+home:"होम",about:"स्टूडियो",cartable:"Cartable",software:"सॉफ्टवेयर",brands:"ब्रांड",team:"टीम",contact:"संपर्क",settings:"सेटिंग्स",theme:"🌙 डार्क / लाइट मोड",changeLanguage:"🌐 भाषा बदलें",welcome:"Rovex में आपका स्वागत है।",heroText:"हम भविष्य की डिजिटल परियोजनाओं की कल्पना और विकास करते हैं।",discover:"स्टूडियो जानें",discordButton:"हमारा Discord ↗",aboutTitle:"हम कौन हैं?",aboutSubtitle:"Rovex Studio को जानें।",aboutText:"Rovex Studio सॉफ्टवेयर विकास, मीडिया और नई तकनीकों पर केंद्रित एक स्वतंत्र स्टूडियो है।",projects:"हमारी परियोजनाएँ",projectsText:"उद्देश्यपूर्ण परियोजनाएँ।",cartableText:"Cartable एक डिजिटल नोटबुक परियोजना है जो छात्रों, विशेष रूप से DYS या ADHD वाले लोगों की सहायता करती है।",learnMore:"और जानें",softwareTitle:"हमारे सॉफ्टवेयर",softwareText:"हमारी टीम द्वारा बनाए गए डिजिटल उपकरण।",software1:"छात्रों के लिए डिजिटल नोटबुक।",applications:"ऐप्लिकेशन",software2:"नवीन डिजिटल ऐप और उपकरण।",webSolutions:"वेब समाधान",software3:"हमारी टीम द्वारा विकसित प्लेटफ़ॉर्म।",brandsTitle:"हमारे ब्रांड",brandsText:"अलग-अलग दुनिया, एक दिशा।",mediaText:"मीडिया और रचनात्मकता की दुनिया।",technologyText:"तकनीकी नवाचार की दुनिया।",networkText:"डिजिटल प्लेटफ़ॉर्म की दुनिया।",teamTitle:"प्रबंधन और टीम",teamText:"हमारी परियोजनाओं को आगे बढ़ाने वाले लोग।",founder:"संस्थापक",chiefCabinet:"CEO कार्यालय के मुख्य कार्यकारी",operations:"संचालन प्रबंधन",technical:"तकनीकी प्रबंधन",management:"प्रबंधन",managementText:"प्रबंधन टीम के सभी सदस्य।",leadership:"नेतृत्व टीम",staffText:"परियोजनाओं में योगदान देने वाले सदस्य।",join:"Rovex Studio से जुड़ें।",joinText:"Discord पर हमारी टीम से मिलें।",openDiscord:"Discord खोलें ↗",contactTitle:"हमसे संपर्क करें।",contactText:"कोई प्रश्न, साझेदारी या परियोजना?",chooseSubject:"विषय चुनें",send:"संदेश भेजें →",footer:"नवाचार · रचना · प्रौद्योगिकी"
+},
+sv:{
+home:"Hem",about:"Studio",cartable:"Cartable",software:"Programvara",brands:"Varumärken",team:"Team",contact:"Kontakt",settings:"Inställningar",theme:"🌙 Mörkt / ljust läge",changeLanguage:"🌐 Byt språk",welcome:"Välkommen till Rovex.",heroText:"Vi skapar och utvecklar framtidens digitala projekt.",discover:"Upptäck studion",discordButton:"Vår Discord ↗",aboutTitle:"Vilka är vi?",aboutSubtitle:"Upptäck Rovex Studio.",aboutText:"Rovex Studio är en oberoende studio för programvaruutveckling, media och ny teknik.",projects:"Våra projekt",projectsText:"Projekt med mening.",cartableText:"Cartable är ett digitalt anteckningsprojekt som hjälper elever, särskilt personer med DYS eller ADHD.",learnMore:"Läs mer",softwareTitle:"Vår programvara",softwareText:"Digitala verktyg skapade av vårt team.",software1:"En digital anteckningsbok för elever.",applications:"Applikationer",software2:"Innovativa digitala applikationer.",webSolutions:"Webblösningar",software3:"Plattformar och tjänster från vårt team.",brandsTitle:"Våra varumärken",brandsText:"Olika världar, en riktning.",mediaText:"Vår värld för media och kreativitet.",technologyText:"Vår värld för teknisk innovation.",networkText:"Vår värld för digitala plattformar.",teamTitle:"Ledning och team",teamText:"Människorna bakom våra projekt.",founder:"Grundare",chiefCabinet:"Chef för VD:s kansli",operations:"Operativ ledning",technical:"Teknisk ledning",management:"Ledning",managementText:"Alla medlemmar i ledningsgruppen.",leadership:"Ledningsgrupp",staffText:"Medlemmar som arbetar med projekten.",join:"Gå med i Rovex Studio.",joinText:"Träffa vårt team på Discord.",openDiscord:"Öppna Discord ↗",contactTitle:"Kontakta oss.",contactText:"En fråga? Ett partnerskap? Ett projekt?",chooseSubject:"Välj ämne",send:"Skicka meddelande →",footer:"Innovation · Skapande · Teknik"
+},
+da:{
+home:"Hjem",about:"Studio",cartable:"Cartable",software:"Software",brands:"Mærker",team:"Team",contact:"Kontakt",settings:"Indstillinger",theme:"🌙 Mørk / lys tilstand",changeLanguage:"🌐 Skift sprog",welcome:"Velkommen til Rovex.",heroText:"Vi forestiller os og udvikler fremtidens digitale projekter.",discover:"Oplev studiet",discordButton:"Vores Discord ↗",aboutTitle:"Hvem er vi?",aboutSubtitle:"Oplev Rovex Studio.",aboutText:"Rovex Studio er et uafhængigt studie med fokus på softwareudvikling, medier og nye teknologier.",projects:"Vores projekter",projectsText:"Projekter med mening.",cartableText:"Cartable er et digitalt notesbogsprojekt, der hjælper elever, især personer med DYS eller ADHD.",learnMore:"Læs mere",softwareTitle:"Vores software",softwareText:"Digitale værktøjer skabt af vores team.",software1:"En digital notesbog til elever.",applications:"Applikationer",software2:"Innovative digitale applikationer.",webSolutions:"Webløsninger",software3:"Platforme og tjenester udviklet af teamet.",brandsTitle:"Vores mærker",brandsText:"Forskellige verdener, én retning.",mediaText:"Vores verden for medier og kreativitet.",technologyText:"Vores verden for teknologisk innovation.",networkText:"Vores verden for digitale platforme.",teamTitle:"Ledelse og team",teamText:"Menneskene bag vores projekter.",founder:"Grundlægger",chiefCabinet:"Chef for CEO's kabinet",operations:"Driftsledelse",technical:"Teknisk ledelse",management:"Ledelse",managementText:"Alle medlemmer af ledelsesteamet.",leadership:"Ledelsesteam",staffText:"Medlemmer, der deltager i projekterne.",join:"Bliv en del af Rovex Studio.",joinText:"Mød vores team på Discord.",openDiscord:"Åbn Discord ↗",contactTitle:"Kontakt os.",contactText:"Et spørgsmål? Et partnerskab? Et projekt?",chooseSubject:"Vælg emne",send:"Send besked →",footer:"Innovation · Skabelse · Teknologi"
+},
+no:{
+home:"Hjem",about:"Studio",cartable:"Cartable",software:"Programvare",brands:"Merker",team:"Team",contact:"Kontakt",settings:"Innstillinger",theme:"🌙 Mørk / lys modus",changeLanguage:"🌐 Bytt språk",welcome:"Velkommen til Rovex.",heroText:"Vi utvikler morgendagens digitale prosjekter.",discover:"Oppdag studioet",discordButton:"Vår Discord ↗",aboutTitle:"Hvem er vi?",aboutSubtitle:"Oppdag Rovex Studio.",aboutText:"Rovex Studio er et uavhengig studio for programvareutvikling, medier og ny teknologi.",projects:"Våre prosjekter",projectsText:"Prosjekter med mening.",cartableText:"Cartable er et digitalt notatbokprosjekt som støtter elever, spesielt personer med DYS eller ADHD.",learnMore:"Les mer",softwareTitle:"Vår programvare",softwareText:"Digitale verktøy laget av teamet vårt.",software1:"En digital notatbok for elever.",applications:"Apper",software2:"Innovative digitale apper og verktøy.",webSolutions:"Nettsideløsninger",software3:"Plattformer og tjenester utviklet av teamet.",brandsTitle:"Våre merker",brandsText:"Ulike verdener, én retning.",mediaText:"Vår verden for medier og kreativitet.",technologyText:"Vår verden for teknologisk innovasjon.",networkText:"Vår verden for digitale plattformer.",teamTitle:"Ledelse og team",teamText:"Menneskene bak prosjektene våre.",founder:"Grunnlegger",chiefCabinet:"Leder for CEO-kontoret",operations:"Driftsledelse",technical:"Teknisk ledelse",management:"Ledelse",managementText:"Alle medlemmer av ledergruppen.",leadership:"Ledergruppe",staffText:"Medlemmer som bidrar til prosjektene.",join:"Bli med i Rovex Studio.",joinText:"Møt teamet vårt på Discord.",openDiscord:"Åpne Discord ↗",contactTitle:"Kontakt oss.",contactText:"Et spørsmål? Et samarbeid? Et prosjekt?",chooseSubject:"Velg et emne",send:"Send melding →",footer:"Innovasjon · Skaping · Teknologi"
+},
+fi:{
+home:"Etusivu",about:"Studio",cartable:"Cartable",software:"Ohjelmistot",brands:"Brändit",team:"Tiimi",contact:"Yhteystiedot",settings:"Asetukset",theme:"🌙 Tumma / vaalea tila",changeLanguage:"🌐 Vaihda kieltä",welcome:"Tervetuloa Rovexiin.",heroText:"Suunnittelemme ja kehitämme tulevaisuuden digitaalisia projekteja.",discover:"Tutustu studioon",discordButton:"Discordimme ↗",aboutTitle:"Keitä olemme?",aboutSubtitle:"Tutustu Rovex Studioon.",aboutText:"Rovex Studio on itsenäinen studio, joka keskittyy ohjelmistokehitykseen, mediaan ja uusiin teknologioihin.",projects:"Projektimme",projectsText:"Merkityksellisiä projekteja.",cartableText:"Cartable on digitaalinen vihkoprojekti, joka tukee oppilaita, erityisesti henkilöitä, joilla on DYS tai ADHD.",learnMore:"Lue lisää",softwareTitle:"Ohjelmistomme",softwareText:"Tiimimme luomia digitaalisia työkaluja.",software1:"Digitaalinen vihko oppilaille.",applications:"Sovellukset",software2:"Innovatiivisia digitaalisia sovelluksia.",webSolutions:"Verkkoratkaisut",software3:"Tiimimme kehittämiä alustoja ja palveluita.",brandsTitle:"Brändimme",brandsText:"Eri maailmoja, yksi suunta.",mediaText:"Median ja luovuuden maailmamme.",technologyText:"Teknologisen innovaation maailmamme.",networkText:"Digitaalisten alustojen maailmamme.",teamTitle:"Johto ja tiimi",teamText:"Projektimme eteenpäin vievät ihmiset.",founder:"Perustaja",chiefCabinet:"Toimitusjohtajan kabinetin johtaja",operations:"Operatiivinen johto",technical:"Tekninen johto",management:"Johto",managementText:"Kaikki johtoryhmän jäsenet.",leadership:"Johtoryhmä",staffText:"Projekteihin osallistuvat jäsenet.",join:"Liity Rovex Studioon.",joinText:"Tapaa tiimimme Discordissa.",openDiscord:"Avaa Discord ↗",contactTitle:"Ota yhteyttä.",contactText:"Kysymys? Kumppanuus? Projekti?",chooseSubject:"Valitse aihe",send:"Lähetä viesti →",footer:"Innovaatio · Luovuus · Teknologia"
+}
+};
+
+let currentLanguage = "fr";
+
+const languageGrid = document.getElementById("languageGrid");
+const languageSelect = document.getElementById("languageSelect");
+
+Object.entries(languages).forEach(([code,name])=>{
+ const button=document.createElement("button");
+ button.textContent=name;
+ button.onclick=()=>chooseLanguage(code);
+ languageGrid.appendChild(button);
+
+ const option=document.createElement("option");
+ option.value=code;
+ option.textContent=name;
+ languageSelect.appendChild(option);
+});
+
+function chooseLanguage(code){
+ currentLanguage=code;
+ localStorage.setItem("rovexLanguage",code);
+ translatePage();
+ document.getElementById("languageScreen").style.display="none";
+ languageSelect.value=code;
+}
+
+function changeLanguage(code){
+ currentLanguage=code;
+ localStorage.setItem("rovexLanguage",code);
+ translatePage();
+}
+
+function translatePage(){
+ const dictionary=translations[currentLanguage] || translations.en;
+ document.documentElement.lang=currentLanguage;
+
+ document.querySelectorAll("[data-i]").forEach(element=>{
+  const key=element.getAttribute("data-i");
+  if(dictionary[key]) element.textContent=dictionary[key];
+ });
+
+ document.body.dir=currentLanguage==="ar"?"rtl":"ltr";
+}
+
+function openLanguageScreen(){
+ document.getElementById("languageScreen").style.display="flex";
+ document.getElementById("settingsMenu").classList.remove("show");
+}
+
+function toggleSettings(){
+ document.getElementById("settingsMenu").classList.toggle("show");
+}
+
+function toggleTheme(){
+ document.body.classList.toggle("dark");
+ localStorage.setItem("rovexTheme",
+  document.body.classList.contains("dark")?"dark":"light");
+}
+
+if(localStorage.getItem("rovexTheme")==="dark"){
+ document.body.classList.add("dark");
+}
+
+const savedLanguage=localStorage.getItem("rovexLanguage");
+
+if(savedLanguage && translations[savedLanguage]){
+ chooseLanguage(savedLanguage);
+}else{
+ document.getElementById("languageScreen").style.display="flex";
+}
+
+const observer=new IntersectionObserver(entries=>{
+ entries.forEach(entry=>{
+  if(entry.isIntersecting){
+   entry.target.classList.add("visible");
+  }
+ });
+},{threshold:.12});
+
+document.querySelectorAll(".card").forEach(card=>observer.observe(card));
+
+document.getElementById("contactForm").addEventListener("submit",function(e){
+ e.preventDefault();
+
+ const destination="TON-ADRESSE@EXEMPLE.FR";
+ const nom=document.getElementById("nom").value;
+ const email=document.getElementById("email").value;
+ const sujet=document.getElementById("sujet").value;
+ const message=document.getElementById("message").value;
+
+ const subject=encodeURIComponent("Rovex Studio - "+sujet);
+ const body=encodeURIComponent(
+  "Nom : "+nom+"\nE-mail : "+email+"\nSujet : "+sujet+"\n\n"+message
+ );
+
+ window.location.href="mailto:"+destination+"?subject="+subject+"&body="+body;
+});
+</script>
+
+</body>
+</html>
